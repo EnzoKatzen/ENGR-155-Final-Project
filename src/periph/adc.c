@@ -52,7 +52,7 @@ HAL_StatusTypeDef ADC1_init(void) {
     .WatchdogNumber = ADC_ANALOGWATCHDOG_1,
     .WatchdogMode = ADC_ANALOGWATCHDOG_SINGLE_REG,
     .Channel = ADC_CHANNEL_5,
-    .ITMode = ENABLE,
+    .ITMode = DISABLE,
     .LowThreshold = 1000, // configurable
     .HighThreshold = 2000 // configurable
   };
@@ -75,4 +75,19 @@ HAL_StatusTypeDef ADC1_teardown(void) {
   }
 
   return HAL_OK;
+}
+
+void ADC1_arm(void) {
+  __HAL_ADC_ENABLE_IT(&__ADC1_HANDLE, ADC_IT_AWD1);
+}
+
+void ADC1_IRQHandler(void) {
+  HAL_ADC_IRQHandler(&__ADC1_HANDLE);
+}
+
+void HAL_ADC_LevelOutOfWindowCallback(ADC_HandleTypeDef* handle) {
+  if (handle->Instance == ADC1) {
+    __HAL_ADC_DISABLE_IT(handle, ADC_IT_AWD1);
+    // do stuff...
+  }
 }

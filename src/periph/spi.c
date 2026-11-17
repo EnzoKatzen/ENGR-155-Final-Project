@@ -2,8 +2,8 @@
 
 SPI_HandleTypeDef __SPI1_HANDLE = {};
 static uint8_t _SPI1_rx[3];
-uint32_t SPI1_data = 0;
-bool SPI1_data_pending = false;
+volatile uint32_t SPI1_data = 0;
+volatile bool SPI1_data_pending = false;
 
 HAL_StatusTypeDef SPI1_init(void) { 
   GPIO_InitTypeDef gpio_config = {
