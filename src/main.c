@@ -19,7 +19,8 @@ int main(void) {
     || TIM1_init() != HAL_OK
     || timer_start() != HAL_OK) _error_handler();
   if (I2C1_init() != HAL_OK) _error_handler();
-  if (SPI1_init() != HAL_OK) _error_handler();
+  // spi is not needed for the demo code yet
+  // if (SPI1_init() != HAL_OK) _error_handler();
   if (UART2_init() != HAL_OK) _error_handler();
   printf("LOG - Peripheral initialization complete\n");
 

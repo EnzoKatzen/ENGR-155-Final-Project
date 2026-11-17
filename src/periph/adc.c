@@ -53,8 +53,8 @@ HAL_StatusTypeDef ADC1_init(void) {
     .WatchdogMode = ADC_ANALOGWATCHDOG_SINGLE_REG,
     .Channel = ADC_CHANNEL_5,
     .ITMode = DISABLE,
-    .LowThreshold = 1000, // configurable
-    .HighThreshold = 2000 // configurable
+    .LowThreshold = 1241, // (1V / 3.3V) * 4095 = 1241
+    .HighThreshold = 2482 // (2V / 3.3V) * 4095 = 2482
   };
   if (HAL_ADC_AnalogWDGConfig(&handle, &watchdog_config) != HAL_OK) {
     return HAL_ERROR;
@@ -78,6 +78,7 @@ HAL_StatusTypeDef ADC1_teardown(void) {
 }
 
 void ADC1_arm(void) {
+  // make ADC1 fire one interrupt the next time it goes out of range, must be re-armed after each use
   __HAL_ADC_ENABLE_IT(&__ADC1_HANDLE, ADC_IT_AWD1);
 }
 
@@ -88,6 +89,6 @@ void ADC1_IRQHandler(void) {
 void HAL_ADC_LevelOutOfWindowCallback(ADC_HandleTypeDef* handle) {
   if (handle->Instance == ADC1) {
     __HAL_ADC_DISABLE_IT(handle, ADC_IT_AWD1);
-    // do stuff...
+    // this runs once whenever the ADC goes out of range
   }
 }

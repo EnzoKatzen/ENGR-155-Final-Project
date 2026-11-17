@@ -7,7 +7,7 @@
 
 extern SPI_HandleTypeDef __SPI1_HANDLE;
 extern volatile uint32_t SPI1_data;
-extern volatile bool SPI1_data_pending;
+extern volatile bool SPI1_data_arrived;
 
 HAL_StatusTypeDef SPI1_init(void);
 HAL_StatusTypeDef SPI1_teardown(void);

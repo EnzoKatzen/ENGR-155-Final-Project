@@ -49,6 +49,7 @@ static void _sensor_update(void) {
 
 static void _game_tick(void) {
   tilt_module_update(&_game_tilt_module, &_game_imu);
+  printf("GAME - tilt danger: %.2f\n", _game_tilt_module.tilt_danger);
 
   if (_game_tilt_module.strike.pending) {
     printf("GAME - strike recorded from tilt module\n");

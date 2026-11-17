@@ -49,14 +49,19 @@ HAL_StatusTypeDef sysclk_config(void) {
 }
 
 void SysTick_Handler(void) {
+  // DO NOT DELETE THIS
+  // the HAL automatically configures a systick interrupt to implement functions like
+  // HAL_Delay(), if this interrupt does not call the following function, the program will hang
   HAL_IncTick();
 }
 
 void print_config(void) {
+  // this is also needed for printing over UART
   setvbuf(stdout, NULL, _IONBF, 0);
 }
 
 int _write(int file, char *ptr, int len) {
+  // this function is needed for printing over UART
   (void) file;
 
   if (HAL_UART_Transmit(

@@ -10,12 +10,14 @@ static const uint8_t ACCEL_REG_PDET  = 0x09;
 static const uint8_t ACCEL_REG_PD    = 0x0A;
 
 static float _accel_conversion(uint8_t data) {
+  // convert data from the imu registers into a float that represents acceleration in g
   // value is a 6-bit signed twos-complement integer
   int8_t value = (data & 0b11111) + ((data & (1<<5)) ? -32 : 0);
   return (1.5f / 32.0f) * value;
 }
 
 HAL_StatusTypeDef accel_write_mode(Accelerometer_HandleTypeDef* handle) {
+  // update the active/standby mode of the imu
   if (handle == NULL || handle->bus == NULL) {
     return HAL_ERROR;
   }
@@ -36,6 +38,7 @@ HAL_StatusTypeDef accel_write_mode(Accelerometer_HandleTypeDef* handle) {
 }
 
 HAL_StatusTypeDef accel_read_data(Accelerometer_HandleTypeDef* handle) {
+  // reads sensor data and places the values into the data member of the struct
   if (handle == NULL || handle->bus == NULL) {
     return HAL_ERROR;
   }
@@ -76,6 +79,7 @@ HAL_StatusTypeDef accel_read_data(Accelerometer_HandleTypeDef* handle) {
 }
 
 HAL_StatusTypeDef accel_write_config(Accelerometer_HandleTypeDef* handle) {
+  // writes configuration data to the imu (things like sampling rate and debounce filters)
   if (handle == NULL || handle->bus == NULL) {
     return HAL_ERROR;
   }

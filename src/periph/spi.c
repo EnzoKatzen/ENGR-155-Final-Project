@@ -2,8 +2,8 @@
 
 SPI_HandleTypeDef __SPI1_HANDLE = {};
 static uint8_t _SPI1_rx[3];
-volatile uint32_t SPI1_data = 0;
-volatile bool SPI1_data_pending = false;
+volatile uint32_t SPI1_data = 0; // the data that was received from SPI
+volatile bool SPI1_data_arrived = false; // flag that indicates if new data has arrived from FPGA debouncer
 
 HAL_StatusTypeDef SPI1_init(void) { 
   GPIO_InitTypeDef gpio_config = {
@@ -66,11 +66,12 @@ void SPI1_IRQHandler(void) {
 
 void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef* handle) {
   // invoked by the HAL whenever SPI receives something
+  // all SPI buses share the same callback, so we need to check which SPI handle fired
   if (handle->Instance == SPI1) {
     SPI1_data =
       ((uint32_t) (_SPI1_rx[0] & 0b111111) << 12)
       | ((uint32_t) (_SPI1_rx[1] & 0b111111) << 6)
       | ((uint32_t) (_SPI1_rx[2] & 0b111111));
-    SPI1_data_pending = true;
+    SPI1_data_arrived = true;
   }
 }
