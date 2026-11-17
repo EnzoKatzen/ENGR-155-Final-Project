@@ -1,31 +1,17 @@
 #include "periph/sys.h"
 
-int _write(int file, char *ptr, int len) {
-  (void) file;
-
-  if (HAL_UART_Transmit(
-    &__UART2_HANDLE,
-    (uint8_t*) ptr,
-    (uint16_t) len,
-    HAL_MAX_DELAY
-  ) != HAL_OK) {
-    return -1;
-  }
-
-  return len;
-}
-
 HAL_StatusTypeDef sysclk_config(void) {
   // enable all peripheral clocks
   __HAL_RCC_PWR_CLK_ENABLE();
   __HAL_RCC_SYSCFG_CLK_ENABLE();
-  __HAL_RCC_TIM2_CLK_ENABLE();
-  __HAL_RCC_TIM1_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_TIM2_CLK_ENABLE();
+  __HAL_RCC_TIM1_CLK_ENABLE();
   __HAL_RCC_I2C1_CLK_ENABLE();
   __HAL_RCC_SPI1_CLK_ENABLE();
   __HAL_RCC_USART2_CLK_ENABLE();
+  __HAL_RCC_ADC_CLK_ENABLE();
 
   // run HSI at 80 MHz through the PLL
   RCC_OscInitTypeDef osc_config = {
@@ -62,6 +48,25 @@ HAL_StatusTypeDef sysclk_config(void) {
   return HAL_OK;
 }
 
+void SysTick_Handler(void) {
+  HAL_IncTick();
+}
+
 void print_config(void) {
   setvbuf(stdout, NULL, _IONBF, 0);
+}
+
+int _write(int file, char *ptr, int len) {
+  (void) file;
+
+  if (HAL_UART_Transmit(
+    &__UART2_HANDLE,
+    (uint8_t*) ptr,
+    (uint16_t) len,
+    HAL_MAX_DELAY
+  ) != HAL_OK) {
+    return -1;
+  }
+
+  return len;
 }
