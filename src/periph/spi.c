@@ -25,8 +25,8 @@ HAL_StatusTypeDef SPI1_init(void) {
       .Mode = SPI_MODE_SLAVE,
       .Direction = SPI_DIRECTION_2LINES,
       .DataSize = SPI_DATASIZE_6BIT,
-      .CLKPolarity = SPI_POLARITY_HIGH,
-      .CLKPhase = SPI_PHASE_2EDGE,
+      .CLKPolarity = SPI_POLARITY_LOW,
+      .CLKPhase = SPI_PHASE_1EDGE,
       .NSS = SPI_NSS_HARD_INPUT,
       .NSSPMode = SPI_NSS_PULSE_DISABLE,
       .FirstBit = SPI_FIRSTBIT_MSB
