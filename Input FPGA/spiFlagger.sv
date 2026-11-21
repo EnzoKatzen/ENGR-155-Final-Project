@@ -33,4 +33,5 @@ module spiFlagger #(
             spiLoadOld <= spiLoad;
         end
     end
+    
 endmodule

@@ -26,4 +26,5 @@ module debouncer #(
     for (int i = 0; i < N; i++)
       sout &= q[i*WIDTH +: WIDTH];
     end
+    
 endmodule
